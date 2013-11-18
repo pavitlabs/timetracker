@@ -6,9 +6,10 @@
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
+var employees = require('./routes/employees');
 var http = require('http');
 var path = require('path');
-var EmployeeProvider = require('./employeeProvider').EmployeeProvider;
+
 
 var app = express();
 
@@ -31,58 +32,13 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-var employeeProvider= new EmployeeProvider('localhost', 27017);
-
 app.get('/', routes.index);
 app.get('/users', user.list);
+app.get('/employees', employees.list);
+app.get('/employee/new', employees.add);
+//app.post('/employee/new', employees.add);
 
 //Routes
-
-app.get('/employees', function(req, res){
-employeeProvider.findAll(function(error, emps){
-    res.render('employees', {
-          title: 'Employees',
-          employees:emps
-      });
-});
-});
-
-app.get('/employee/new', function(req, res) {
-  res.render('employee', {
-      title: 'New Employee'
-  });
-});
-
-//save new employee
-app.post('/employee/new', function(req, res){
-  employeeProvider.save({
-      title: req.param('title'),
-      name: req.param('name')
-  }, function( error, docs) {
-      res.redirect('/employees');
-  });
-});
-
-//update an employee
-app.get('/employee/:id/edit', function(req, res) {
-    employeeProvider.findById(req.param('_id'), function(error, employee) {
-            res.render('employee',
-            { 
-                    employee: employee
-            });
-    });
-});
-
-//save updated employee
-app.post('/employee/:id/edit', function(req, res) {
-    employeeProvider.update(req.param('_id'),{
-            title: req.param('title'),
-            name: req.param('name')
-    }, function(error, docs) {
-            res.redirect('/employees');
-    });
-});
-
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
