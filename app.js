@@ -35,8 +35,10 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/employees', employees.list);
-app.get('/employee/new', employees.add);
-//app.post('/employee/new', employees.add);
+app.get('/employee/new', employees.addEmployee);
+app.post('/employee/new', employees.saveNewEmployee);
+app.get('/employee/:id/edit', employees.editEmployee);
+app.post('/employee/:id/edit', employees.saveEditedEmployee);
 
 //Routes
 

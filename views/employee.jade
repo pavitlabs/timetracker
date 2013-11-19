@@ -1,17 +1,31 @@
 extends layout
 
 block content
-    h1= "Edit Employee"
-    div.newemployee
-        form( method="post")
-            input(name="_id", type="hidden", value=employee._id.toHexString()) 
-            div
-                div
-                    span.label Title :
-                    input(type="text", name="title", id="editEmployeeTitle", value=employee.title)
-                div
-                    span.label Name :
-                    input(type="text", name="name", id="editEmployeeName", value=employee.name)
-                div#editEmployeeSubmit
-                    input(type="submit", value="Update")
-        a(href="/employees")!= "Back to Employee List"        
+	if(employee === undefined)
+		h1= "Add Employee"
+	else 
+		h1= "Edit Employee"    
+	div.newemployee
+		form( method="post")
+			if(employee === undefined)
+				div
+					div
+						span.label Title :
+						input(type="text", name="title", id="editEmployeeTitle")
+					div
+						span.label Name :
+						input(type="text", name="name", id="editEmployeeName")
+					div#editEmployeeSubmit
+						input(type="submit", value="Save")
+			else
+				input(name="_id", type="hidden", value=employee._id.toHexString()) 
+				div
+					div
+						span.label Title :
+						input(type="text", name="title", id="editEmployeeTitle", value=employee.title)
+					div
+						span.label Name :
+						input(type="text", name="name", id="editEmployeeName", value=employee.name)
+					div#editEmployeeSubmit
+						input(type="submit", value="Update")							
+	a(href="/employees")!= "Back to Employee List"        
