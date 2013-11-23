@@ -52,8 +52,8 @@ EmployeeProvider.prototype.save = function(employees, callback) {
 				employees = [ employees ];
 
 			for (var i = 0; i < employees.length; i++) {
-				employee = employees[i];
-				employee.created_at = new Date();
+				newEmployee = employees[i];
+				newEmployee.created_at = new Date();
 			}
 
 			employee_collection.insert(employees, function() {
@@ -70,8 +70,7 @@ EmployeeProvider.prototype.findById = function(id, callback) {
 			callback(error);
 		else {
 			employee_collection.findOne({
-				_id : employee_collection.db.bson_serializer.ObjectID
-						.createFromHexString(id)
+				_id : employee_collection.db.bson_serializer.ObjectID.createFromHexString(id)
 			}, function(error, result) {
 				if (error)
 					callback(error);
@@ -89,8 +88,7 @@ EmployeeProvider.prototype.update = function(employeeId, employees, callback) {
 			callback(error);
 		else {
 			employee_collection.update({
-				_id : employee_collection.db.bson_serializer.ObjectID
-						.createFromHexString(employeeId)
+				_id : employee_collection.db.bson_serializer.ObjectID.createFromHexString(employeeId)
 			}, employees, function(error, employees) {
 				if (error)
 					callback(error);

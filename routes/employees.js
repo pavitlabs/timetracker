@@ -31,6 +31,7 @@ exports.saveNewEmployee = function(req, res) {
 
 // update an employee
 exports.editEmployee = function(req, res) {
+	console.log(req.param('_id'));
 	employeeProvider.findById(req.param('_id'), function(error, employee) {
 		res.render('employee', {
 			employee : employee
@@ -47,21 +48,3 @@ exports.saveEditedEmployee = function(req, res) {
 		res.redirect('/employees');
 	});
 };
-
-/*
- * app.get('/employee/new', function(req, res) { res.render('employee', { title:
- * 'New Employee' }); });
- * 
- * //save new employee app.post('/employee/new', function(req, res){
- * 
- * });
- * 
- * //update an employee app.get('/employee/:id/edit', function(req, res) {
- * employeeProvider.findById(req.param('_id'), function(error, employee) {
- * res.render('employee', { employee: employee }); }); });
- * 
- * //save updated employee app.post('/employee/:id/edit', function(req, res) {
- * employeeProvider.update(req.param('_id'),{ title: req.param('title'), name:
- * req.param('name') }, function(error, docs) { res.redirect('/employees'); });
- * });
- */
