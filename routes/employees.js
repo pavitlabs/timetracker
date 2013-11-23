@@ -15,7 +15,7 @@ exports.list = function(req, res) {
 
 exports.addEmployee = function(req, res) {
 	res.render('employee', {
-		employee : undefined, 
+		employee : undefined,
 		title : 'New Employee'
 	});
 };
@@ -39,12 +39,18 @@ exports.editEmployee = function(req, res) {
 	});
 };
 
-//save updated employee
+// save updated employee
 exports.saveEditedEmployee = function(req, res) {
 	employeeProvider.update(req.param('_id'), {
 		title : req.param('title'),
 		name : req.param('name')
 	}, function(error, docs) {
+		res.redirect('/employees');
+	});
+};
+
+exports.deleteEmployee = function(req, res) {
+	employeeProvider.deleteEmployee(req.param('_id'), function(error, docs) {
 		res.redirect('/employees');
 	});
 };

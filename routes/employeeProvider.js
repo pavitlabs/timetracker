@@ -8,11 +8,10 @@ var BSON = require('mongodb').BSON;
 var ObjectID = require('mongodb').ObjectID;
 
 EmployeeProvider = function(host, port) {
-	this.db = new Db('timetracker', new Server("127.0.0.1", 27017, {}),
-			{
-				safe : false,
-				strict : false
-			});
+	this.db = new Db('timetracker', new Server("127.0.0.1", 27017, {}), {
+		safe : false,
+		strict : false
+	});
 	this.db.open(function() {
 	});
 };
@@ -70,7 +69,8 @@ EmployeeProvider.prototype.findById = function(id, callback) {
 			callback(error);
 		else {
 			employee_collection.findOne({
-				_id : employee_collection.db.bson_serializer.ObjectID.createFromHexString(id)
+				_id : employee_collection.db.bson_serializer.ObjectID
+						.createFromHexString(id)
 			}, function(error, result) {
 				if (error)
 					callback(error);
@@ -88,12 +88,32 @@ EmployeeProvider.prototype.update = function(employeeId, employees, callback) {
 			callback(error);
 		else {
 			employee_collection.update({
-				_id : employee_collection.db.bson_serializer.ObjectID.createFromHexString(employeeId)
+				_id : employee_collection.db.bson_serializer.ObjectID
+						.createFromHexString(employeeId)
 			}, employees, function(error, employees) {
 				if (error)
 					callback(error);
 				else
 					callback(null, employees);
+			});
+		}
+	});
+};
+
+// delete employee
+EmployeeProvider.prototype.deleteEmployee = function(employeeId, callback) {
+	this.getCollection(function(error, employee_collection) {
+		if (error)
+			callback(error);
+		else {
+			employee_collection.remove({
+				_id : employee_collection.db.bson_serializer.ObjectID
+						.createFromHexString(employeeId)
+			}, function(error, employee) {
+				if (error)
+					callback(error);
+				else
+					callback(null, employee);
 			});
 		}
 	});
